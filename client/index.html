@@ -12,8 +12,8 @@
         function connectWebSocket() {
             const ws = new WebSocket("wss://perudo-easy.netlify.app/.netlify/functions/websocket");
             ws.onopen = () => alert("Connected to WebSocket");
-            ws.onmessage = event => alert("Message from server:", event.data);
-            ws.onclose = () => alert("Disconnected from WebSocket");
+            //ws.onmessage = event => alert("Message from server:", event.data);
+            //ws.onclose = () => alert("Disconnected from WebSocket");
         }
     </script>
 </body>
