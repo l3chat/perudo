@@ -8,14 +8,17 @@
 <body>
     <h1>Welcome to Perudo</h1>
     <button onclick="connectWebSocket()">Connect</button>
-    <div id="log"></div> <!-- Блок для вывода сообщений -->
-    
+    <div id="log" style="border: 1px solid #000; padding: 10px; margin-top: 10px; height: 150px; overflow-y: auto;"></div>
+
     <script>
         function logMessage(message) {
             const logDiv = document.getElementById("log");
             const newMessage = document.createElement("p");
             newMessage.textContent = message;
             logDiv.appendChild(newMessage);
+            
+            // Прокручиваем вниз, чтобы видеть последние сообщения
+            logDiv.scrollTop = logDiv.scrollHeight;
         }
 
         function connectWebSocket() {
