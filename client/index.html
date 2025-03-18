@@ -4,62 +4,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Perudo Game</title>
-    <style>
-        body { font-family: Arial, sans-serif; text-align: center; }
-        .game-container { max-width: 600px; margin: auto; padding: 20px; border: 1px solid #000; }
-        .dice-container { display: flex; justify-content: center; gap: 10px; }
-        .dice { width: 50px; height: 50px; border: 1px solid black; display: flex; align-items: center; justify-content: center; font-size: 24px; }
-        .players { margin-top: 20px; }
-        .bets { margin-top: 20px; }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Perudo Game</h1>
+    <h1>Перудо Онлайн</h1>
     <div class="game-container">
-        <h2>Your Dice</h2>
-        <div class="dice-container" id="playerDice"></div>
-
-        <h2>Players</h2>
-        <div class="players" id="playersList"></div>
-
-        <h2>Current Bet</h2>
-        <div class="bets" id="currentBet">No bet yet</div>
-        
-        <button onclick="raiseBet()">Raise Bet</button>
-        <button onclick="callPerudo()">Perudo!</button>
-        <button onclick="rollDice()">Roll Dice</button>
+        <div id="players">
+            <h2>Игроки</h2>
+            <ul id="player-list"></ul>
+        </div>
+        <div id="game-board">
+            <h2>Игровой стол</h2>
+            <div id="dice-container"></div>
+        </div>
+        <div id="chat">
+            <h2>Чат</h2>
+            <div id="chat-box"></div>
+            <input type="text" id="chat-input" placeholder="Введите сообщение...">
+            <button onclick="sendMessage()">Отправить</button>
+        </div>
     </div>
-
-    <script>
-        let dice = [1, 2, 3, 4, 5, 6];
-        let playerDice = [];
-        let players = ["Player 1", "Player 2", "Player 3"];
-        let currentBet = "No bet yet";
-
-        function rollDice() {
-            playerDice = Array.from({ length: 5 }, () => dice[Math.floor(Math.random() * dice.length)]);
-            updateUI();
-        }
-
-        function updateUI() {
-            document.getElementById("playerDice").innerHTML = playerDice.map(num => `<div class='dice'>${num}</div>`).join('');
-            document.getElementById("playersList").innerHTML = players.map(player => `<p>${player}</p>`).join('');
-            document.getElementById("currentBet").innerText = currentBet;
-        }
-
-        function raiseBet() {
-            let bet = prompt("Enter your bet (e.g., '3 sixes'):");
-            if (bet) {
-                currentBet = bet;
-                updateUI();
-            }
-        }
-
-        function callPerudo() {
-            alert("Perudo called! Dice will be revealed!");
-        }
-
-        rollDice();
-    </script>
+    <div class="controls">
+        <input type="number" id="bet-count" placeholder="Количество костей">
+        <input type="number" id="bet-value" placeholder="Номинал кости (1-6)">
+        <button onclick="placeBet()">Сделать ставку</button>
+        <button onclick="callPerudo()">Перудо!</button>
+    </div>
+    <script src="script.js"></script>
 </body>
 </html>
