@@ -6,6 +6,9 @@ body {
 h1 {
     color: #333;
 }
+#room-selection {
+    margin-bottom: 20px;
+}
 .game-container {
     display: flex;
     justify-content: space-around;
@@ -16,11 +19,6 @@ h1 {
     padding: 10px;
     border: 1px solid #ccc;
     background-color: white;
-}
-#dice-container {
-    display: flex;
-    justify-content: center;
-    margin-top: 10px;
 }
 #chat-box {
     height: 150px;
