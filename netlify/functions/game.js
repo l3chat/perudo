@@ -29,7 +29,8 @@ exports.handler = async function (event, context) {
         }
 
         let roomId = data.roomId;
-        if (!games[roomId]) return { statusCode: 404, body: "Room not found" };
+        //if (!games[roomId]) return { statusCode: 404, body: "Room not found" };
+	if (!games[roomId]) return { statusCode: 404, body: JSON.stringify({ error: "Room not found" }) };
 
         games[roomId].lastActivity = Date.now();
 

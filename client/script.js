@@ -14,7 +14,16 @@ function createRoom() {
         body: JSON.stringify({ type: "createRoom" }),
         headers: { "Content-Type": "application/json" }
     })
-    .then(response => response.json())
+//    .then(response => response.json())
+.then(response => response.text()) 
+.then(text => {
+    try {
+        return JSON.parse(text);
+    } catch {
+        console.error("Invalid JSON response:", text);
+        return {};
+    }
+})
     .then(data => {
         roomId = data.roomId;
         document.getElementById("room-selection").style.display = "none";
@@ -96,3 +105,10 @@ function callPerudo() {
     });
     logMessage(`${playerName} вызвал Перудо!`);
 }
+
+
+
+
+
+
+
