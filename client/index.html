@@ -10,24 +10,27 @@
     <button onclick="connectWebSocket()">Connect</button>
     <div id="log" style="border: 1px solid #000; padding: 10px; margin-top: 10px; height: 150px; overflow-y: auto;"></div>
 
-    <script>
-        function logMessage(message) {
-            const logDiv = document.getElementById("log");
-            const newMessage = document.createElement("p");
-            newMessage.textContent = message;
-            logDiv.appendChild(newMessage);
-            
-            // Прокручиваем вниз, чтобы видеть последние сообщения
-            logDiv.scrollTop = logDiv.scrollHeight;
-        }
+<script>
+    function connectSSE() {
+        const eventSource = new EventSource("/.netlify/functions/websocket");
 
-        function connectWebSocket() {
-            const ws = new WebSocket("wss://your-netlify-site.netlify.app/.netlify/functions/websocket");
+        eventSource.onmessage = (event) => {
+            logMessage("📩 Message: " + event.data);
+        };
 
-            ws.onopen = () => logMessage("✅ Connected to WebSocket");
-            ws.onmessage = (event) => logMessage("📩 Message: " + event.data);
-            ws.onclose = () => logMessage("❌ Disconnected from WebSocket");
-        }
-    </script>
+        eventSource.onopen = () => logMessage("✅ Connected to SSE Server");
+        eventSource.onerror = () => logMessage("❌ SSE Connection Error");
+    }
+
+    function logMessage(message) {
+        const logDiv = document.getElementById("log");
+        const newMessage = document.createElement("p");
+        newMessage.textContent = message;
+        logDiv.appendChild(newMessage);
+    }
+</script>
+
+<button onclick="connectSSE()">Connect to SSE</button>
+
 </body>
 </html>
