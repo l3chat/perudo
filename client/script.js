@@ -1,4 +1,4 @@
-Vlet playerName = prompt("Введите ваше имя") || "Игрок";
+let playerName = prompt("Введите ваше имя") || "Игрок";
 let roomId = null;
 
 function logMessage(message) {
