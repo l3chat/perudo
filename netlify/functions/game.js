@@ -52,8 +52,239 @@ exports.handler = async function (event, context) {
         let roomId = event.queryStringParameters.roomId;
         if (!games[roomId]) return { statusCode: 404, body: "Room not found" };
 
-        return { statusCode: 200, body: JSON.stringify(games[roomId]) };
+        return new Promise((resolve) => {
+            const checkUpdates = () => {
+                if (games[roomId].messages.length > 0 || games[roomId].bets.length > 0) {
+                    let responseData = { messages: [...games[roomId].messages], bets: [...games[roomId].bets] };
+
+                    // Очистка сообщений после отправки
+                    games[roomId].messages = [];
+                    games[roomId].bets = [];
+
+                    resolve({
+                        statusCode: 200,
+                        body: JSON.stringify(responseData)
+                    });
+                } else {
+                    setTimeout(checkUpdates, 2000);
+                }
+            };
+            checkUpdates();
+        });
     }
 
     return { statusCode: 400, body: "Invalid request" };
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
