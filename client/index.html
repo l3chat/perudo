@@ -4,48 +4,62 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Perudo Game</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; }
+        .game-container { max-width: 600px; margin: auto; padding: 20px; border: 1px solid #000; }
+        .dice-container { display: flex; justify-content: center; gap: 10px; }
+        .dice { width: 50px; height: 50px; border: 1px solid black; display: flex; align-items: center; justify-content: center; font-size: 24px; }
+        .players { margin-top: 20px; }
+        .bets { margin-top: 20px; }
+    </style>
 </head>
 <body>
-    <h1>Welcome to Perudo</h1>
+    <h1>Perudo Game</h1>
+    <div class="game-container">
+        <h2>Your Dice</h2>
+        <div class="dice-container" id="playerDice"></div>
+
+        <h2>Players</h2>
+        <div class="players" id="playersList"></div>
+
+        <h2>Current Bet</h2>
+        <div class="bets" id="currentBet">No bet yet</div>
+        
+        <button onclick="raiseBet()">Raise Bet</button>
+        <button onclick="callPerudo()">Perudo!</button>
+        <button onclick="rollDice()">Roll Dice</button>
+    </div>
+
     <script>
-    function logMessage(message) {
-        const logDiv = document.getElementById("log");
-        const newMessage = document.createElement("p");
-        newMessage.textContent = message;
-        logDiv.appendChild(newMessage);
-    }
+        let dice = [1, 2, 3, 4, 5, 6];
+        let playerDice = [];
+        let players = ["Player 1", "Player 2", "Player 3"];
+        let currentBet = "No bet yet";
 
-    function startPolling() {
-        function poll() {
-            fetch("/.netlify/functions/polling")
-                .then(response => response.json())
-                .then(data => {
-                    if (data.messages && data.messages.length > 0) {
-                        data.messages.forEach(msg => logMessage("📩 " + msg));
-                    }
-                    poll(); // Отправляем новый запрос
-                })
-                .catch(error => logMessage("❌ Polling error: " + error));
+        function rollDice() {
+            playerDice = Array.from({ length: 5 }, () => dice[Math.floor(Math.random() * dice.length)]);
+            updateUI();
         }
-        poll(); // Запускаем первый запрос
-        logMessage("✅ Polling started...");
-    }
 
-    function sendMessage() {
-        const message = prompt("Enter a message:");
-        if (!message) return;
+        function updateUI() {
+            document.getElementById("playerDice").innerHTML = playerDice.map(num => `<div class='dice'>${num}</div>`).join('');
+            document.getElementById("playersList").innerHTML = players.map(player => `<p>${player}</p>`).join('');
+            document.getElementById("currentBet").innerText = currentBet;
+        }
 
-        fetch("/.netlify/functions/polling", {
-            method: "POST",
-            body: JSON.stringify({ message }),
-            headers: { "Content-Type": "application/json" }
-        }).then(() => logMessage("✅ Message sent: " + message));
-    }
-</script>
+        function raiseBet() {
+            let bet = prompt("Enter your bet (e.g., '3 sixes'):");
+            if (bet) {
+                currentBet = bet;
+                updateUI();
+            }
+        }
 
-<button onclick="startPolling()">Start Polling</button>
-<button onclick="sendMessage()">Send Message</button>
-<div id="log"></div>
+        function callPerudo() {
+            alert("Perudo called! Dice will be revealed!");
+        }
 
+        rollDice();
+    </script>
 </body>
 </html>
