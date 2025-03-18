@@ -59,9 +59,11 @@ function startPolling() {
     function poll() {
         fetch(`/.netlify/functions/game?roomId=${roomId}`)
             .then(response => response.json())
-            .then(data => {
-                data.messages.forEach(msg => logMessage(`${msg.player}: ${msg.text}`));
-                poll();
+	    .then(data => {
+	        if (data && data.messages) {
+    		    data.messages.forEach(msg => logMessage(`${msg.player}: ${msg.text}`));
+		}
+	        poll();
             })
             .catch(error => console.error("Polling error:", error));
     }
@@ -71,3 +73,26 @@ function startPolling() {
 window.onload = function() {
     logMessage("Добро пожаловать, " + playerName + "!");
 };
+
+
+function placeBet() {
+    let count = document.getElementById("bet-count").value;
+    let value = document.getElementById("bet-value").value;
+    if (count && value) {
+        fetch("/.netlify/functions/game", {
+            method: "POST",
+            body: JSON.stringify({ type: "bet", roomId, player: playerName, count, value }),
+            headers: { "Content-Type": "application/json" }
+        });
+        logMessage(`${playerName} поставил ${count} костей номиналом ${value}`);
+    }
+}
+
+function callPerudo() {
+    fetch("/.netlify/functions/game", {
+        method: "POST",
+        body: JSON.stringify({ type: "perudo", roomId, player: playerName }),
+        headers: { "Content-Type": "application/json" }
+    });
+    logMessage(`${playerName} вызвал Перудо!`);
+}
